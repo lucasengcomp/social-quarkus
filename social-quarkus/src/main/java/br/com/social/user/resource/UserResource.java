@@ -28,6 +28,18 @@ public class UserResource {
         return Response.ok(listUsers.list()).build();
     }
 
+    @DELETE
+    @Path("{id}")
+    @Transactional
+    public Response deleteUser(@PathParam("id") Long id) {
+        User user = User.findById(id);
+        if (user != null) {
+            user.delete();
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
     private static User createEntityUser(CreateUserRequest userRequest) {
         User user = new User();
         user.setName(userRequest.getName());
