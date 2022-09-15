@@ -1,7 +1,7 @@
 package br.com.social.core.exceptions;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintViolation;
+import javax.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -40,5 +40,9 @@ public class ResponseError {
 
     public void setErrors(Collection<FieldError> errors) {
         this.errors = errors;
+    }
+
+    public Response withStatusCode(int code) {
+        return Response.status(code).entity(this).build();
     }
 }
