@@ -1,6 +1,6 @@
-package br.com.social.core.exceptions;
+package br.com.social.core.consts;
 
-public class ConstsException {
+public class ConstsStatusCode {
 
     public static final int UNPROCESSABLE_ENTITY_STATUS = 422;
     public static final int CREATED_STATUS = 201;

@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Set;
 
-import static br.com.social.core.exceptions.ConstsException.*;
+import static br.com.social.core.consts.ConstsStatusCode.*;
 
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
