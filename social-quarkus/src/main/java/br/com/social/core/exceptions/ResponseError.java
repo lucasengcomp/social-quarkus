@@ -1,5 +1,7 @@
 package br.com.social.core.exceptions;
 
+import lombok.Data;
+
 import javax.validation.ConstraintViolation;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
@@ -7,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Data
 public class ResponseError {
 
     private String message;
@@ -24,22 +27,6 @@ public class ResponseError {
                 .collect(Collectors.toList());
 
         return new ResponseError("Validation error", errors);
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Collection<FieldError> getErrors() {
-        return errors;
-    }
-
-    public void setErrors(Collection<FieldError> errors) {
-        this.errors = errors;
     }
 
     public Response withStatusCode(int code) {
