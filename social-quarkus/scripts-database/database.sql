@@ -12,3 +12,9 @@ CREATE TABLE IF NOT EXISTS POSTS (
 	date_time timestamp not null,
 	user_id bigint not null references USERS(id)
 );
+
+CREATE TABLE IF NOT EXISTS FOLLOWERS (
+	id bigserial NOT NULL PRIMARY KEY,
+    user_id int NOT NULL references USERS(id),
+    follower_id bigint NOT NULL REFERENCES USERS(id)
+);
