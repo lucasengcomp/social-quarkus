@@ -7,4 +7,5 @@ public class ConstsStatusCode {
     public static final int NOT_FOUND_STATUS = 404;
     public static final int NO_CONTENT = 204;
     public static final int CONFLICT = 409;
+    public static final int FORBIDDEN = 403;
 }

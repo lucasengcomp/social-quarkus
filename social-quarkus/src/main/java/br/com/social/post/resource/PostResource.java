@@ -1,12 +1,12 @@
 package br.com.social.post.resource;
 
+import br.com.social.follower.repository.FollowerRepository;
 import br.com.social.post.dto.CreatePostRequest;
 import br.com.social.post.dto.PostResponse;
 import br.com.social.post.model.Post;
 import br.com.social.post.repository.PostRepository;
 import br.com.social.user.model.User;
 import br.com.social.user.repository.UserRepository;
-import com.arjuna.ats.internal.jdbc.drivers.modifiers.list;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 
@@ -15,13 +15,10 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static br.com.social.core.consts.ConstsStatusCode.CREATED_STATUS;
-import static br.com.social.core.consts.ConstsStatusCode.NOT_FOUND_STATUS;
+import static br.com.social.core.consts.ConstsStatusCode.*;
 
 @Path("/users/{userId}/posts")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -30,11 +27,13 @@ public class PostResource {
 
     private PostRepository postRepository;
     private UserRepository userRepository;
+    private FollowerRepository followerRepository;
 
     @Inject
-    public PostResource(UserRepository userRepository, PostRepository postRepository) {
+    public PostResource(UserRepository userRepository, PostRepository postRepository, FollowerRepository followerRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.followerRepository = followerRepository;
     }
 
     @POST
@@ -51,10 +50,26 @@ public class PostResource {
     }
 
     @GET
-    public Response listPosts(@PathParam("userId") Long userId) {
+    public Response listPosts(@PathParam("userId") Long userId,
+                              @HeaderParam("followerId") Long followerId) {
         User user = userRepository.findById(userId);
         if (user == null) {
             return Response.status(NOT_FOUND_STATUS).build();
+        }
+
+        if (followerId == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("You forgot the header followerId").build();
+        }
+
+        User follower = userRepository.findById(followerId);
+        if (follower == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Inexistent followerId").build();
+        }
+
+        boolean isFollow = followerRepository.isFollower(follower, user);
+
+        if (!isFollow) {
+            return Response.status(FORBIDDEN).entity("Yout can't see this Posts!").build();
         }
 
         return Response.ok(organizeListPosts(user)).build();
