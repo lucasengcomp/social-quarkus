@@ -1,7 +1,9 @@
 package br.com.social.follower.resource;
 
 import br.com.social.follower.model.Follower;
+import br.com.social.follower.model.dto.FollowerPerUserResponse;
 import br.com.social.follower.model.dto.FollowerRequest;
+import br.com.social.follower.model.dto.FollowerResponse;
 import br.com.social.follower.repository.FollowerRepository;
 import br.com.social.user.repository.UserRepository;
 
@@ -10,6 +12,9 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static br.com.social.core.consts.ConstsStatusCode.*;
 
@@ -52,5 +57,27 @@ public class FollowerResource {
         }
 
         return Response.status(NO_CONTENT).build();
+    }
+
+    @GET
+    public Response listFollowers(@PathParam("userId") Long userId) {
+        var user = userRepository.findById(userId);
+
+        if (user == null) {
+            return Response.status(NOT_FOUND_STATUS).build();
+        }
+
+        var list = followerRepository.findByUser(userId);
+        FollowerPerUserResponse responseObject = new FollowerPerUserResponse();
+
+        responseObject.setFollowerPerCount(list.size());
+
+        List<FollowerResponse> followerList = list.stream()
+                .map(FollowerResponse::new)
+                .collect(Collectors.toList());
+
+        responseObject.setContent(followerList);
+
+        return Response.ok(responseObject).build();
     }
 }
