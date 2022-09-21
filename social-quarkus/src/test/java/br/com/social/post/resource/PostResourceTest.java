@@ -93,4 +93,18 @@ public class PostResourceTest {
                 .statusCode(400)
                 .body(Matchers.is("You forgot the header followerId"));
     }
+
+    @Test
+    @DisplayName("Should return 400 when follower doesn't exist")
+    public void listPostFollowerNotFoundTest() {
+        var inexistentFollower = 1000;
+        given()
+                .pathParam("userId", userId)
+                .header("followerId", inexistentFollower)
+                .when()
+                .get()
+                .then()
+                .statusCode(400)
+                .body(Matchers.is("Inexistent followerId"));
+    }
 }
