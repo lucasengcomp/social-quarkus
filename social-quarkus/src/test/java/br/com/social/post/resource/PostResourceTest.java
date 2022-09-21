@@ -7,6 +7,7 @@ import br.com.social.user.repository.UserRepository;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -79,5 +80,17 @@ public class PostResourceTest {
                 .get()
                 .then()
                 .statusCode(404);
+    }
+
+    @Test
+    @DisplayName("Should return 400 when followerId header is not present")
+    public void listPostFollowerHeaderNotSendTest() {
+        given()
+                .pathParam("userId", userId)
+                .when()
+                .get()
+                .then()
+                .statusCode(400)
+                .body(Matchers.is("You forgot the header followerId"));
     }
 }
