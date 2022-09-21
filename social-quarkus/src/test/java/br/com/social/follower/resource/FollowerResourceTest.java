@@ -94,4 +94,18 @@ public class FollowerResourceTest {
                 .then()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode());
     }
+
+    @Test
+    @DisplayName("Should return 404 on list users followers and User id doesn't exist")
+    public void userNotFoundWhenListingFollowersTest() {
+        var inexistentUserId = 1000;
+
+        given()
+                .contentType(ContentType.JSON)
+                .pathParam("userId", inexistentUserId)
+                .when()
+                .get()
+                .then()
+                .statusCode(404);
+    }
 }
