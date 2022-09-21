@@ -24,6 +24,7 @@ public class PostResourceTest {
     @Inject
     UserRepository userRepository;
     Long userId;
+    Long userNotFollowerId;
 
     @BeforeEach
     @Transactional
@@ -33,6 +34,12 @@ public class PostResourceTest {
         user.setName("Godofredo");
         userRepository.persist(user);
         userId = user.getId();
+
+        var userNotFollower = new User();
+        userNotFollower.setAge(20);
+        userNotFollower.setName("Mestre Yoda");
+        userRepository.persist(userNotFollower);
+        userNotFollowerId = userNotFollower.getId();
     }
 
     @Test
@@ -106,5 +113,18 @@ public class PostResourceTest {
                 .then()
                 .statusCode(400)
                 .body(Matchers.is("Inexistent followerId"));
+    }
+
+    @Test
+    @DisplayName("Should return 403 when follower isn't a follower")
+    public void listPostNotAFollowerTest() {
+        given()
+                .pathParam("userId", userId)
+                .header("followerId", userNotFollowerId)
+                .when()
+                .get()
+                .then()
+                .statusCode(403)
+                .body(Matchers.is("You can't see these posts"));
     }
 }

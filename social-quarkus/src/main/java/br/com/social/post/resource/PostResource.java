@@ -69,7 +69,7 @@ public class PostResource {
         boolean isFollow = followerRepository.isFollower(follower, user);
 
         if (!isFollow) {
-            return Response.status(FORBIDDEN).entity("Yout can't see this Posts!").build();
+            return Response.status(FORBIDDEN).entity("You can't see these posts").build();
         }
 
         return Response.ok(organizeListPosts(user)).build();
