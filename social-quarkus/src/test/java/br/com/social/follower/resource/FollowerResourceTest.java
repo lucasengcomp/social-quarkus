@@ -1,7 +1,9 @@
 package br.com.social.follower.resource;
 
 
+import br.com.social.follower.model.Follower;
 import br.com.social.follower.model.dto.FollowerRequest;
+import br.com.social.follower.repository.FollowerRepository;
 import br.com.social.user.model.User;
 import br.com.social.user.repository.UserRepository;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
@@ -17,6 +19,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 @TestHTTPEndpoint(FollowerResource.class)
@@ -24,6 +27,9 @@ public class FollowerResourceTest {
 
     @Inject
     UserRepository userRepository;
+
+    @Inject
+    FollowerRepository followerRepository;
 
     Long userId;
     Long followerId;
@@ -42,6 +48,11 @@ public class FollowerResourceTest {
         follower.setName("Gandolf");
         userRepository.persist(follower);
         followerId = follower.getId();
+
+        var followerEntity = new Follower();
+        followerEntity.setFollower(follower);
+        followerEntity.setUser(user);
+        followerRepository.persist(followerEntity);
     }
 
     @Test
@@ -107,5 +118,25 @@ public class FollowerResourceTest {
                 .get()
                 .then()
                 .statusCode(404);
+    }
+
+    @Test
+    @DisplayName("should list a user followers")
+    public void listFollowersTest() {
+        var response =
+                given()
+                        .contentType(ContentType.JSON)
+                        .pathParam("userId", userId)
+                        .when()
+                        .get()
+                        .then()
+                        .extract().response();
+
+        var followersCount = response.jsonPath().get("followerPerCount");
+        var followersContent = response.jsonPath().getList("content");
+
+        assertEquals(200, response.statusCode());
+        assertEquals(1, followersCount);
+        assertEquals(1, followersContent.size());
     }
 }
