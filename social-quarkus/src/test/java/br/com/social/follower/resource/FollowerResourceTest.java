@@ -16,9 +16,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.core.Response;
 
-import static br.com.social.core.consts.ConstsStatusCode.NO_CONTENT;
+import static br.com.social.core.consts.ConstsStatusCode.*;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,10 +33,13 @@ public class FollowerResourceTest {
 
     Long userId;
     Long followerId;
+    Long inexistentId;
 
     @BeforeEach
     @Transactional
     void setUp() {
+        inexistentId = 1000L;
+
         var user = new User();
         user.setAge(20);
         user.setName("Godofredo");
@@ -69,7 +71,7 @@ public class FollowerResourceTest {
                 .when()
                 .put()
                 .then()
-                .statusCode(409)
+                .statusCode(CONFLICT)
                 .body(Matchers.is("You can't follow yourself"));
     }
 
@@ -78,22 +80,20 @@ public class FollowerResourceTest {
     public void userNotFoundTest() {
         var follower = new FollowerRequest();
         follower.setFollowerId(userId);
-        var inexistentUserId = 1000;
 
         given()
                 .contentType(ContentType.JSON)
                 .body(follower)
-                .pathParam("userId", inexistentUserId)
+                .pathParam("userId", inexistentId)
                 .when()
                 .put()
                 .then()
-                .statusCode(404);
+                .statusCode(NOT_FOUND_STATUS);
     }
 
     @Test
-    @DisplayName("should follow a user")
+    @DisplayName("Should follow a user")
     public void followUserTest() {
-
         var follower = new FollowerRequest();
         follower.setFollowerId(followerId);
 
@@ -104,25 +104,23 @@ public class FollowerResourceTest {
                 .when()
                 .put()
                 .then()
-                .statusCode(Response.Status.NO_CONTENT.getStatusCode());
+                .statusCode(NO_CONTENT);
     }
 
     @Test
     @DisplayName("Should return 404 on list users followers and User id doesn't exist")
     public void userNotFoundWhenListingFollowersTest() {
-        var inexistentUserId = 1000;
-
         given()
                 .contentType(ContentType.JSON)
-                .pathParam("userId", inexistentUserId)
+                .pathParam("userId", inexistentId)
                 .when()
                 .get()
                 .then()
-                .statusCode(404);
+                .statusCode(NOT_FOUND_STATUS);
     }
 
     @Test
-    @DisplayName("should list a user followers")
+    @DisplayName("Should list a user followers")
     public void listFollowersTest() {
         var response =
                 given()
@@ -136,13 +134,13 @@ public class FollowerResourceTest {
         var followersCount = response.jsonPath().get("followerPerCount");
         var followersContent = response.jsonPath().getList("content");
 
-        assertEquals(200, response.statusCode());
+        assertEquals(OK, response.statusCode());
         assertEquals(1, followersCount);
         assertEquals(1, followersContent.size());
     }
 
     @Test
-    @DisplayName("should unfollow an user")
+    @DisplayName("Should unfollow an user")
     public void unfollowUserTest() {
         given()
                 .pathParam("userId", userId)
