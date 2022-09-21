@@ -67,4 +67,17 @@ public class PostResourceTest {
                 .then()
                 .statusCode(404);
     }
+
+    @Test
+    @DisplayName("Should return 404 when user doesn't exist")
+    public void listPostUserNotFoundTest() {
+        var inexistentUserId = 1000;
+
+        given()
+                .pathParam("userId", inexistentUserId)
+                .when()
+                .get()
+                .then()
+                .statusCode(404);
+    }
 }
