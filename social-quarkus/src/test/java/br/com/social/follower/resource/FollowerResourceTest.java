@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 
+import static br.com.social.core.consts.ConstsStatusCode.NO_CONTENT;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -138,5 +139,17 @@ public class FollowerResourceTest {
         assertEquals(200, response.statusCode());
         assertEquals(1, followersCount);
         assertEquals(1, followersContent.size());
+    }
+
+    @Test
+    @DisplayName("should unfollow an user")
+    public void unfollowUserTest() {
+        given()
+                .pathParam("userId", userId)
+                .queryParam("followerId", followerId)
+                .when()
+                .delete()
+                .then()
+                .statusCode(NO_CONTENT);
     }
 }
