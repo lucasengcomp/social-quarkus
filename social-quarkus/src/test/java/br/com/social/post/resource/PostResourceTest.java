@@ -1,7 +1,11 @@
 package br.com.social.post.resource;
 
 
+import br.com.social.follower.model.Follower;
+import br.com.social.follower.repository.FollowerRepository;
 import br.com.social.post.dto.CreatePostRequest;
+import br.com.social.post.model.Post;
+import br.com.social.post.repository.PostRepository;
 import br.com.social.user.model.User;
 import br.com.social.user.repository.UserRepository;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
@@ -23,8 +27,16 @@ public class PostResourceTest {
 
     @Inject
     UserRepository userRepository;
+
+    @Inject
+    FollowerRepository followerRepository;
+
+    @Inject
+    PostRepository postRepository;
+
     Long userId;
     Long userNotFollowerId;
+    Long userFollowerId;
 
     @BeforeEach
     @Transactional
@@ -35,11 +47,27 @@ public class PostResourceTest {
         userRepository.persist(user);
         userId = user.getId();
 
+        var post = new Post();
+        post.setText("Speak up guys! I'm away for a few days");
+        post.setUser(user);
+        postRepository.persist(post);
+
         var userNotFollower = new User();
         userNotFollower.setAge(20);
         userNotFollower.setName("Mestre Yoda");
         userRepository.persist(userNotFollower);
         userNotFollowerId = userNotFollower.getId();
+
+        var userFollower = new User();
+        userFollower.setAge(32);
+        userFollower.setName("Cipriano Naves");
+        userRepository.persist(userFollower);
+        userFollowerId = userFollower.getId();
+
+        var follower = new Follower();
+        follower.setUser(user);
+        follower.setFollower(userFollower);
+        followerRepository.persist(follower);
     }
 
     @Test
@@ -126,5 +154,18 @@ public class PostResourceTest {
                 .then()
                 .statusCode(403)
                 .body(Matchers.is("You can't see these posts"));
+    }
+
+    @Test
+    @DisplayName("Should list posts")
+    public void listAllPostsPerUserTest() {
+        given()
+                .pathParam("userId", userId)
+                .header("followerId", userFollowerId)
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .body("size()", Matchers.is(1));
     }
 }
