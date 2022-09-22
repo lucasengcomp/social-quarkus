@@ -1,6 +1,6 @@
-package br.com.social.user.repository;
+package br.com.social.application.user.repository;
 
-import br.com.social.user.model.User;
+import br.com.social.application.user.model.User;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;

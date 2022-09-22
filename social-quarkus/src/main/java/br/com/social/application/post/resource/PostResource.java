@@ -1,12 +1,12 @@
-package br.com.social.post.resource;
+package br.com.social.application.post.resource;
 
-import br.com.social.follower.repository.FollowerRepository;
-import br.com.social.post.dto.CreatePostRequest;
-import br.com.social.post.dto.PostResponse;
-import br.com.social.post.model.Post;
-import br.com.social.post.repository.PostRepository;
-import br.com.social.user.model.User;
-import br.com.social.user.repository.UserRepository;
+import br.com.social.application.follower.repository.FollowerRepository;
+import br.com.social.application.post.dto.CreatePostRequest;
+import br.com.social.application.post.dto.PostResponse;
+import br.com.social.application.user.model.User;
+import br.com.social.application.user.repository.UserRepository;
+import br.com.social.application.post.model.Post;
+import br.com.social.application.post.repository.PostRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 

@@ -1,11 +1,12 @@
 package br.com.social.follower.resource;
 
 
-import br.com.social.follower.model.Follower;
-import br.com.social.follower.model.dto.FollowerRequest;
-import br.com.social.follower.repository.FollowerRepository;
-import br.com.social.user.model.User;
-import br.com.social.user.repository.UserRepository;
+import br.com.social.application.follower.model.Follower;
+import br.com.social.application.follower.model.dto.FollowerRequest;
+import br.com.social.application.follower.repository.FollowerRepository;
+import br.com.social.application.follower.resource.FollowerResource;
+import br.com.social.application.user.model.User;
+import br.com.social.application.user.repository.UserRepository;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;

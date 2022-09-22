@@ -1,7 +1,7 @@
-package br.com.social.follower.repository;
+package br.com.social.application.follower.repository;
 
-import br.com.social.follower.model.Follower;
-import br.com.social.user.model.User;
+import br.com.social.application.follower.model.Follower;
+import br.com.social.application.user.model.User;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Parameters;

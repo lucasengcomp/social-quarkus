@@ -1,7 +1,7 @@
-package br.com.social.follower.model;
+package br.com.social.application.follower.model;
 
 
-import br.com.social.user.model.User;
+import br.com.social.application.user.model.User;
 import lombok.Data;
 
 import javax.persistence.*;

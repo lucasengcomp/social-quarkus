@@ -1,4 +1,4 @@
-package br.com.social.post.dto;
+package br.com.social.application.post.dto;
 
 import lombok.Data;
 

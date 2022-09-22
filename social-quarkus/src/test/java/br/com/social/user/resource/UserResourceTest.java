@@ -1,6 +1,6 @@
 package br.com.social.user.resource;
 
-import br.com.social.user.dto.CreateUserRequest;
+import br.com.social.application.user.dto.CreateUserRequest;
 import io.quarkus.test.common.http.TestHTTPResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;

@@ -1,6 +1,6 @@
-package br.com.social.post.dto;
+package br.com.social.application.post.dto;
 
-import br.com.social.post.model.Post;
+import br.com.social.application.post.model.Post;
 import lombok.Data;
 
 import java.time.LocalDateTime;

@@ -1,6 +1,6 @@
-package br.com.social.post.model;
+package br.com.social.application.post.model;
 
-import br.com.social.user.model.User;
+import br.com.social.application.user.model.User;
 import lombok.Data;
 
 import javax.persistence.*;

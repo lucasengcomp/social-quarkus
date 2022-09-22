@@ -1,9 +1,9 @@
-package br.com.social.user.resource;
+package br.com.social.application.user.resource;
 
+import br.com.social.application.user.dto.CreateUserRequest;
+import br.com.social.application.user.model.User;
+import br.com.social.application.user.repository.UserRepository;
 import br.com.social.core.exceptions.ResponseError;
-import br.com.social.user.dto.CreateUserRequest;
-import br.com.social.user.model.User;
-import br.com.social.user.repository.UserRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 
 import javax.inject.Inject;

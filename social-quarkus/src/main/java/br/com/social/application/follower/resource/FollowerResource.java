@@ -1,11 +1,11 @@
-package br.com.social.follower.resource;
+package br.com.social.application.follower.resource;
 
-import br.com.social.follower.model.Follower;
-import br.com.social.follower.model.dto.FollowerPerUserResponse;
-import br.com.social.follower.model.dto.FollowerRequest;
-import br.com.social.follower.model.dto.FollowerResponse;
-import br.com.social.follower.repository.FollowerRepository;
-import br.com.social.user.repository.UserRepository;
+import br.com.social.application.follower.model.Follower;
+import br.com.social.application.follower.repository.FollowerRepository;
+import br.com.social.application.user.repository.UserRepository;
+import br.com.social.application.follower.model.dto.FollowerPerUserResponse;
+import br.com.social.application.follower.model.dto.FollowerRequest;
+import br.com.social.application.follower.model.dto.FollowerResponse;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;

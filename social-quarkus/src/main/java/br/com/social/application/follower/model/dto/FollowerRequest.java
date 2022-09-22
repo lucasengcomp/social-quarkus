@@ -1,4 +1,4 @@
-package br.com.social.follower.model.dto;
+package br.com.social.application.follower.model.dto;
 
 import lombok.Data;
 

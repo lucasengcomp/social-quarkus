@@ -1,4 +1,4 @@
-package br.com.social.user.model;
+package br.com.social.application.user.model;
 
 import lombok.Data;
 

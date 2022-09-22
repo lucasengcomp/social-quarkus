@@ -1,6 +1,6 @@
-package br.com.social.follower.model.dto;
+package br.com.social.application.follower.model.dto;
 
-import br.com.social.follower.model.Follower;
+import br.com.social.application.follower.model.Follower;
 import lombok.Data;
 
 @Data
